@@ -1,0 +1,151 @@
+Thread:
+------
+	
+	Lightweight sub process
+	smallest independent unit of a program.
+	contains separate path of exeuction.
+	Every Java program will have at least one thread = Main Thread
+	Main = Execution context where certain jobs will be executed one after other, in a sequence.
+	From main, child threads are spawned
+	main thread must be the last to finish execution, as it will terminate the program. 
+	
+	create thread from java.lan.Thread package
+	Once you create a thread, it will have a life cycle.
+	
+	State
+	-----
+	    New 						(Create a new object of thread) 
+	     |
+	  Runnable 					(Once a thread start, it is in Runnable state)
+	     |    \
+	     |	  Waiting	  (Thread in in state of inactivity, alive but not doing anything. It can be sleeping, waiting or blocked)    
+	     |	  /
+	  Running 					(Thread start executing by entering run(). Yield() can make thread go back to runnable)
+	     |	  
+	  Terminated	      (When the thread has completed the task)
+	 
+	 
+	 Create
+	 ------
+	 
+	 	By default we'll have a main Thread( main method)
+	 
+	 	(1) Extend Thread class               | OR | (2) Implement Runnable
+	 			- Override run()                             - Override run()
+				- create object										           - create object                     
+				- call object.start()             	 	       - call object.start()
+	 	      which will internally 
+	 	      invoke run() .
+	 
+			class MyThread extends Thread {
+				@Override
+				public void run() {
+					System.out.println("in run()");
+				}
+			}
+			
+			MyThread t1 = new MyThread();
+			t1.start();
+			
+									 JVM
+			 					/	      \
+			 				 /	       \
+			start() /						\ start()
+	    Main Thread				Other Daemon Threads
+	    	/      \
+	     /        \
+	    Thread1	  Thread2
+	                 /    
+	                /
+	            Thread3
+	            
+	Multi-threading
+	--------------
+	
+	is the ability of a program to execute two or more thread concurrently.
+	Each thread can handle a task independently at the same time & can use shared resources.
+	
+	
+	Thread priority:
+	----------------
+	
+	More priority => more CPU thread will get.
+	
+	
+	Alive()
+	------
+	
+	  threadInstance.isAlive();
+	  
+	join():
+	------
+		
+		Parent thread will wait for threadInstance thread to complete.
+		threadInstance.join();
+		
+		Parent thread will wait n milliseconds for threadInstance thread to complete, else will kill
+		threadInstance.join(n);
+		
+  Another way to gracefully terminate a thread after n milliseconds:
+  ------------------------------------------------------------------
+  
+  (1) Wait for a strict n milliseconds, before terminating thread.
+		
+		Thread.sleep(3000);
+   	if(t2.isAlive()) {
+			System.out.println("Thread is still running Trying for graceful termination.");
+			t2.setExitFlag(Boolean.TRUE); //some custom member
+			t2.join(); // to terminate the thread
+		}	
+		
+	(2) For n milliseconds, try to check between some fractions of seconds, if the task is complete.
+		
+		As sometimes, the thread might get completed before n milliseconds.
+		int maxSleep = 3000;
+		int slept = 0;
+		while(slept < maxSleep) {
+			
+			System.out.println("Sleeping for 300. Already slept for " + slept);
+			Thread.sleep(300);
+			slept = slept+300;
+			
+			if(!t2.isAlive()) {
+				System.out.println("Thread was completed in "+ slept/1000 +" seconds. Max sleep time was: " + maxSleep/1000 + " seconds.");
+				System.exit(0);
+			}
+			
+		}
+		
+		if(t2.isAlive()) {
+			System.out.println("Thread is still running after maxSleep: " + maxSleep/1000 + " seconds. Trying for graceful termination.");
+			t2.setExitFlag(Boolean.TRUE);
+			t2.join(); // to terminate the thread
+		}
+  
+  Lock (java.util.concurrent.lock)
+  -----
+  
+  	Can be used instead of synchronized.
+  	Create a shared Lock object that threads can use.
+  	
+  	private static Lock lockRef = new ReentrantLock();
+  	
+  	Use lockRef.lock() to acquire a lock. Allows only one thread to access at a time.
+  	if more that one thread comes to this line lockRef.lock(), then only one
+  	thread will get access & rest of the thread would wait here. 
+  	
+  	* Make sure to unlock using lockRef.unlock(), else other thread would never be able to access/get lock = Starvation. 
+	
+	  Example:
+	  try {
+	  	lockRef.lock();
+	  	...
+	  	// do your stuff
+	  	...
+	  } finally {
+	  	lockRef.unlock(); 
+	  }
+	
+  		
+		
+	   

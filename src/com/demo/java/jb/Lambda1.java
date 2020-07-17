@@ -24,8 +24,8 @@ public class Lambda1 {
 
 		// Below 2 does not have interface defined
 		/*
-		 * addNumberFunction = (int a, int b) -> a + b; divideNumberFunction = (int a,
-		 * int b) -> { if(b == 0) return 0; return a/b; };
+		 * addNumberFunction = (int a, int b) -> a + b; 
+		 * divideNumberFunction = (int a, int b) -> { if(b == 0) return 0; return a/b; };
 		 */
 		
 	}

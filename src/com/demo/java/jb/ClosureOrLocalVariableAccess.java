@@ -11,9 +11,9 @@ public class ClosureOrLocalVariableAccess {
 		printSomething(
 			20, 
 			(num) -> { 
-				System.out.println(num + a); // Comiler allows that, you can access/read.
+				System.out.println(num + a); // Compiler allows that, you can access/read.
 				// But you cannot edit/update, as it is effectively final
-				// a = 1; // This will give comile error
+				// a = 1; // This will give compile error
 				
 			}
 		);
