@@ -1,7 +1,5 @@
 package com.demo.java.jb.exercise.hackerranktest;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
